@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateGrid, Grid } from '../src/renderer/layout.js';
+import { generateGrid } from '../src/renderer/layout.js';
 import type { Task } from '../src/core/types.js';
 
 describe('layout utils', () => {

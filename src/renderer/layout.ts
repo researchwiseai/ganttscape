@@ -9,6 +9,7 @@ export interface Grid {
     label: string;
     depth: number;
     cells: boolean[];
+    tags?: string[];
   }[];
   labelWidth: number;
 }
@@ -42,7 +43,7 @@ export function generateGrid(tasks: Task[]): Grid {
   const rows = tasks.map((t) => {
     const depth = t.parent && taskMap[t.parent] ? 1 : 0;
     const cells = dates.map((d) => d >= t.start && d <= t.end);
-    return { label: t.label, depth, cells };
+    return { label: t.label, depth, cells, tags: t.tags };
   });
   const labelWidth = Math.max(...labelLengths);
   return { dates, rows, labelWidth };
