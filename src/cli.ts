@@ -1,40 +1,51 @@
+import { Command } from 'commander';
 import chalk from 'chalk';
-import { parseSchedule, version, renderSchedule } from './index.js';
+import { parseSchedule, renderSchedule, version } from './index.js';
 
-/**
- * CLI entry point for ganttscape.
- */
-function main(): void {
-  const args = process.argv.slice(2);
-  // Handle --no-color flag
-  const noColorIdx = args.findIndex((a) => a === '--no-color');
-  if (noColorIdx !== -1) {
-    chalk.level = 0;
-    args.splice(noColorIdx, 1);
-  }
-  // Handle width option
-  let width: number | undefined;
-  const widthIdx = args.findIndex((a) => a === '--width' || a === '-w');
-  if (widthIdx !== -1) {
-    const w = Number(args[widthIdx + 1]);
-    if (Number.isNaN(w) || w <= 0) {
-      console.error('Invalid width:', args[widthIdx + 1]);
+const program = new Command();
+
+program
+  .name('ganttscape')
+  .description('Render project timelines as Gantt-style ASCII charts in Unix terminals')
+  .version(version)
+  .argument('<file>', 'Path to schedule file (YAML or JSON)')
+  .option('--scale <scale>', 'Time scale: day | week | month', 'day')
+  .option(
+    '-w, --width <number>',
+    'Truncate timeline width (number of days)',
+    (value) => parseInt(value, 10),
+    undefined,
+  )
+  .option('--no-color', 'Disable ANSI colors')
+  .action((file, options) => {
+    const { scale, width, color } = options;
+    if (!['day', 'week', 'month'].includes(scale)) {
+      console.error(`Unsupported scale: ${scale}`);
       process.exit(1);
     }
-    width = w;
-    args.splice(widthIdx, 2);
-  }
-  if (args.length < 1) {
-    console.error('Usage: ganttscape [--no-color] [--width N] <schedule.yaml|json>');
-    process.exit(1);
-  }
-  const [filePath] = args;
-  console.log(`ganttscape v${version}`);
-  const schedule = parseSchedule(filePath);
-  const output = renderSchedule(schedule, { width });
-  if (output) {
-    console.log(output);
-  }
-}
+    if (!color) {
+      chalk.level = 0;
+    }
+    // Validate width
+    if (options.width !== undefined && (Number.isNaN(options.width) || options.width <= 0)) {
+      console.error('Invalid width:', options.width);
+      process.exit(1);
+    }
+    let schedule;
+    try {
+      schedule = parseSchedule(file);
+    } catch (err) {
+      console.error('Error parsing schedule:', err.message);
+      process.exit(1);
+    }
+    let output;
+    try {
+      output = renderSchedule(schedule, { width });
+    } catch (err) {
+      console.error('Error rendering schedule:', err.message);
+      process.exit(1);
+    }
+    process.stdout.write(output + '\n');
+  });
 
-main();
+program.parse(process.argv);
