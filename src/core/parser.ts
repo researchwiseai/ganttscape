@@ -43,10 +43,18 @@ function validateTask(raw: unknown, index: number): Task {
       );
     }
   }
+  // Parse dates and validate chronological order
+  const startDate = new Date(start as string);
+  const endDate = new Date(end as string);
+  if (endDate < startDate) {
+    throw new Error(
+      `Invalid task at index ${index}: 'end' date (${end}) is before 'start' date (${start})`,
+    );
+  }
   return {
     label,
-    start: new Date(start),
-    end: new Date(end),
+    start: startDate,
+    end: endDate,
     ...(description !== undefined ? { description } : {}),
     ...(parent !== undefined ? { parent } : {}),
     ...(tags !== undefined ? { tags } : {}),
