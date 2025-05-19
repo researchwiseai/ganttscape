@@ -1,0 +1,25 @@
+name: Release
+on:
+  push:
+    branches: [main]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Use Node.js 18"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build
+        run: yarn build
+      - name: Version packages
+        run: npx changeset version
+      - name: Publish packages
+        run: npx changeset publish
+        env:
+          NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}"

@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderSchedule > renders simple schedule snapshot 1`] = `
+"         01-01 01-02 01-03 01-04
+Task A   ███░
+  Task B ░███"
+`;
