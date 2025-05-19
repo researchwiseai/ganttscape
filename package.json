@@ -1,0 +1,35 @@
+{
+  "name": "ganttscape",
+  "version": "0.1.0",
+  "description": "Render project timelines as Gantt-style ASCII charts in Unix terminals.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/cli.ts",
+    "build": "tsup src/index.ts src/cli.ts --format esm,cjs --dts --out-dir dist",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest",
+    "cli": "node dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.19",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "^9.27.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  }
+}
