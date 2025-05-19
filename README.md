@@ -1,6 +1,17 @@
  # ganttscape
 
- ganttscape is an open-source TypeScript command-line tool for rendering project timelines as Gantt-style charts directly in Unix terminals.
+ganttscape is an open-source TypeScript command-line tool for rendering project timelines as Gantt-style charts directly in Unix terminals.
+
+## Installation
+
+Install globally via npm:
+```bash
+npm install --global ganttscape
+```
+Or via Yarn:
+```bash
+yarn global add ganttscape
+```
 
 ## Usage
 
