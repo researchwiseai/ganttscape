@@ -2,7 +2,6 @@
  * Core entry point for ganttscape.
  */
 import { parseSchedule } from './core/parser.js';
-import type { Schedule } from './core/types.js';
 
 export { parseSchedule };
 export const version = '0.1.0';
@@ -12,7 +11,5 @@ export const version = '0.1.0';
  * @param schedule Parsed schedule of tasks
  * @returns empty string for now
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function render(_schedule: Schedule): string {
-  return '';
-}
+import { renderSchedule } from './renderer/index.js';
+export { renderSchedule };

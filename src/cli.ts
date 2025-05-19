@@ -1,4 +1,4 @@
-import { parseSchedule, version, render } from './index.js';
+import { parseSchedule, version, renderSchedule } from './index.js';
 
 /**
  * CLI entry point for ganttscape.
@@ -12,7 +12,7 @@ function main(): void {
   const [filePath] = args;
   console.log(`ganttscape v${version}`);
   const schedule = parseSchedule(filePath);
-  const output = render(schedule);
+  const output = renderSchedule(schedule);
   if (output) {
     console.log(output);
   }
