@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { version, render } from './index.js';
 
 /**

@@ -1,11 +1,9 @@
 /** @type {import("eslint").FlatConfig[]} */
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
+
 module.exports = [
   {
-    ignores: [
-      'dist/**',
-      'node_modules/**',
-      '.yarn/**'
-    ]
+    ignores: ['dist/**', 'node_modules/**', '.yarn/**'],
   },
   {
     files: ['**/*.ts'],
@@ -13,21 +11,15 @@ module.exports = [
       parser: require('@typescript-eslint/parser'),
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     plugins: {
-      '@typescript-eslint': require('@typescript-eslint/eslint-plugin')
+      '@typescript-eslint': tsPlugin,
     },
-    extends: [
-      'airbnb-base',
-      'plugin:@typescript-eslint/recommended',
-      'prettier'
-    ],
     rules: {
+      ...tsPlugin.configs.recommended.rules,
       'no-console': 'off',
-      'import/extensions': 'off',
-      'import/no-unresolved': 'off'
-    }
-  }
+    },
+  },
 ];
