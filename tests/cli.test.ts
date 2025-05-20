@@ -8,12 +8,18 @@ describe("CLI integration", () => {
   it("runs and outputs header and chart", () => {
     const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
     const file = join(tmp, "sched.json");
-    const data = [{ label: "A", start: "2021-01-01", end: "2021-01-01" }];
+    const data = [
+      {
+        label: "A",
+        start: "2024-05-01T00:00:00Z",
+        end: "2024-05-01T00:00:02Z",
+      },
+    ];
     writeFileSync(file, JSON.stringify(data), "utf-8");
     const cliPath = join(process.cwd(), "dist", "cli.js");
     const result = execaSync("node", [cliPath, file]);
     const out = result.stdout;
-    expect(out).toContain("01-01");
+    expect(out).toContain("00:00:00");
     expect(out).toContain("█");
     rmSync(tmp, { recursive: true, force: true });
   });
@@ -28,7 +34,13 @@ describe("CLI integration", () => {
     const file = join(tmp, "sched.json");
     writeFileSync(
       file,
-      JSON.stringify([{ label: "X", start: "2021-01-01", end: "2021-01-01" }]),
+      JSON.stringify([
+        {
+          label: "X",
+          start: "2024-05-01T00:00:00Z",
+          end: "2024-05-01T00:00:01Z",
+        },
+      ]),
       "utf-8",
     );
     const cliPath = join(process.cwd(), "dist", "cli.js");

@@ -6,7 +6,7 @@ describe("renderSchedule", () => {
   it("renders simple schedule snapshot", () => {
     const fixture = join(__dirname, "fixtures", "simple-schedule.json");
     const schedule = parseSchedule(fixture);
-    const output = renderSchedule(schedule);
+    const output = renderSchedule(schedule, { scale: "second" });
     expect(output).toMatchSnapshot();
   });
 });

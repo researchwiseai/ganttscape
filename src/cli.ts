@@ -11,17 +11,21 @@ program
   )
   .version(version)
   .argument("<file>", "Path to schedule file (YAML or JSON)")
-  .option("--scale <scale>", "Time scale: day | week | month", "day")
+  .option(
+    "--scale <scale>",
+    "Time scale: ms | second | minute | hour",
+    "second",
+  )
   .option(
     "-w, --width <number>",
-    "Truncate timeline width (number of days)",
+    "Truncate timeline width (number of time slots)",
     (value) => parseInt(value, 10),
     undefined,
   )
   .option("--no-color", "Disable ANSI colors")
   .action((file, options) => {
     const { scale, width, color } = options;
-    if (!["day", "week", "month"].includes(scale)) {
+    if (!["ms", "second", "minute", "hour"].includes(scale)) {
       console.error(`Unsupported scale: ${scale}`);
       process.exit(1);
     }
@@ -45,7 +49,7 @@ program
     }
     let output;
     try {
-      output = renderSchedule(schedule, { width });
+      output = renderSchedule(schedule, { width, scale });
     } catch (err) {
       console.error("Error rendering schedule:", err.message);
       process.exit(1);
