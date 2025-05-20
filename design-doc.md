@@ -2,7 +2,7 @@
 
 ### 1. Purpose & Scope
 
-Build an open‑source TypeScript command‑line tool that renders project timelines as Gantt‑style charts directly in Unix terminals.  The first release (v0.1.0) targets **developers and DevOps engineers** who need quick, scriptable visualisations of task schedules inside CI logs or local shells.
+Build an open‑source TypeScript command‑line tool that renders project timelines as Gantt‑style charts directly in Unix terminals. The first release (v0.1.0) targets **developers and DevOps engineers** who need quick, scriptable visualisations of task schedules inside CI logs or local shells.
 
 ### 2. Goals (MVP)
 
@@ -14,9 +14,9 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 ### 3. Non‑Goals (v0.1)
 
-* Windows CMD/Powershell rendering
-* Interactive TUI navigation
-* Graphical exports (SVG/PNG)
+- Windows CMD/Powershell rendering
+- Interactive TUI navigation
+- Graphical exports (SVG/PNG)
 
 ### 4. User Personas & Use‑Cases
 
@@ -47,9 +47,9 @@ Build an open‑source TypeScript command‑line tool that renders project timel
            Formatted ANSI string
 ```
 
-* **CLI Entrypoint** (`src/cli.ts`): argument parsing & file I/O.
-* **Core Library** (`src/core/`): parsing, validation, data model (strongly‑typed).
-* **Renderer** (`src/renderer/`): layout calculations, colour theming, line wrapping.
+- **CLI Entrypoint** (`src/cli.ts`): argument parsing & file I/O.
+- **Core Library** (`src/core/`): parsing, validation, data model (strongly‑typed).
+- **Renderer** (`src/renderer/`): layout calculations, colour theming, line wrapping.
 
 ### 6. Technical Stack
 
@@ -90,41 +90,43 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 ### 8. Rendering Specification
 
-* **Time axis granularity:** day columns by default (`--scale week|month`).
-* **Characters:** full block `█` for duration, light shade `░` for incomplete; fallback to `#` when Unicode not supported.
-* **Colours:** auto‑assign distinct hues per tag (max 8) or use monochrome.
-* **Layout rules**
+- **Time axis granularity:** day columns by default (`--scale week|month`).
+- **Characters:** full block `█` for duration, light shade `░` for incomplete; fallback to `#` when Unicode not supported.
+- **Colours:** auto‑assign distinct hues per tag (max 8) or use monochrome.
+- **Layout rules**
 
-  * Task label column width = longest label + padding (truncate with ellipsis).
-  * Indentation for nested tasks (2‑space per level).
-  * Current date marker `│` in bright white.
-* **Width overflow:** wrap or cut the rightmost timeline when terminal width < chart width; support `--width` flag.
+  - Task label column width = longest label + padding (truncate with ellipsis).
+  - Indentation for nested tasks (2‑space per level).
+  - Current date marker `│` in bright white.
+
+- **Width overflow:** wrap or cut the rightmost timeline when terminal width < chart width; support `--width` flag.
 
 ### 9. SemVer & Release Strategy
 
-* Start at **v0.1.0**.
-* Use **changesets** to bump versions & generate changelogs.
-* Publish both **ESM (`dist/index.mjs`)** and **CJS (`dist/index.cjs`)** + type declarations.
-* Tagged releases trigger GitHub Action to publish to npm and create GitHub Release.
+- Start at **v0.1.0**.
+- Use **changesets** to bump versions & generate changelogs.
+- Publish both **ESM (`dist/index.mjs`)** and **CJS (`dist/index.cjs`)** + type declarations.
+- Tagged releases trigger GitHub Action to publish to npm and create GitHub Release.
 
 ### 10. CI / CD Pipeline (GitHub Actions)
 
 1. **CI** (`ci.yml`)
 
-   * Strategy matrix: node 18, 20; os: ubuntu‑latest.
-   * Steps: install (Yarn cache), lint (eslint), test (Vitest + coverage), build (tsup), dry‑run publish.
+   - Strategy matrix: node 18, 20; os: ubuntu‑latest.
+   - Steps: install (Yarn cache), lint (eslint), test (Vitest + coverage), build (tsup), dry‑run publish.
+
 2. **Release** (`release.yml`)
 
-   * Trigger: push to `main` with `version/*` label.
-   * Runs `changeset version && changeset publish`.
-   * Generates artefacts & attaches built binaries.
+   - Trigger: push to `main` with `version/*` label.
+   - Runs `changeset version && changeset publish`.
+   - Generates artefacts & attaches built binaries.
 
 ### 11. Testing Strategy
 
-* **Unit:** parser edge cases, renderer layout maths.
-* **Snapshot:** expected ASCII output vs fixture strings (Vitest `toMatchSnapshot`).
-* **E2E CLI:** spawn CLI via `execa`, assert exit code & stdout.
-* **Coverage target:** ≥ 90 % lines.
+- **Unit:** parser edge cases, renderer layout maths.
+- **Snapshot:** expected ASCII output vs fixture strings (Vitest `toMatchSnapshot`).
+- **E2E CLI:** spawn CLI via `execa`, assert exit code & stdout.
+- **Coverage target:** ≥ 90 % lines.
 
 ### 12. Roadmap
 
@@ -148,4 +150,3 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 1. **Input formats:** Support both YAML and JSON; **YAML** is the preferred option and offers richer features (anchors, comments).
 2. **Ink integration:** Defer embedding Ink; interactive TUI planned post‑v1.0.
 3. **License:** Project will be released under the **MIT License**.
-

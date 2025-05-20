@@ -1,7 +1,7 @@
-import chalk from 'chalk';
-import type { Schedule } from '../core/types.js';
-import { generateGrid } from './layout.js';
-import { formatLabel, renderDates } from './theme.js';
+import chalk from "chalk";
+import type { Schedule } from "../core/types.js";
+import { generateGrid } from "./layout.js";
+import { formatLabel, renderDates } from "./theme.js";
 
 /**
  * Render the full schedule as an ANSI Gantt chart (daily scale).
@@ -18,11 +18,11 @@ export function renderSchedule(
     rows = rows.map((r) => ({ ...r, cells: r.cells.slice(0, opts.width) }));
   }
   if (dates.length === 0) {
-    return '';
+    return "";
   }
 
   // Prepare header
-  const header = ' '.repeat(labelWidth) + ' ' + renderDates(dates);
+  const header = " ".repeat(labelWidth) + " " + renderDates(dates);
   const lines: string[] = [header];
 
   // Build tag color mapping (max 8 colors)
@@ -66,13 +66,13 @@ export function renderSchedule(
     const bar = cells
       .map((on, idx) => {
         if (idx === markerIndex) {
-          return chalk.whiteBright('│');
+          return chalk.whiteBright("│");
         }
-        return on ? colorFn('█') : chalk.gray('░');
+        return on ? colorFn("█") : chalk.gray("░");
       })
-      .join('');
-    lines.push(lbl + ' ' + bar);
+      .join("");
+    lines.push(lbl + " " + bar);
   });
 
-  return lines.join('\n');
+  return lines.join("\n");
 }

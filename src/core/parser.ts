@@ -1,14 +1,14 @@
-import { readFileSync } from 'fs';
-import { extname } from 'path';
-import YAML from 'yaml';
-import type { Task, Schedule } from './types';
+import { readFileSync } from "fs";
+import { extname } from "path";
+import YAML from "yaml";
+import type { Task, Schedule } from "./types";
 
 function isString(value: unknown): value is string {
-  return typeof value === 'string';
+  return typeof value === "string";
 }
 
 function validateTask(raw: unknown, index: number): Task {
-  if (typeof raw !== 'object' || raw === null) {
+  if (typeof raw !== "object" || raw === null) {
     throw new Error(`Invalid task at index ${index}: not an object`);
   }
   const obj = raw as Record<string, unknown>;
@@ -34,7 +34,9 @@ function validateTask(raw: unknown, index: number): Task {
     );
   }
   if (parent !== undefined && !isString(parent)) {
-    throw new Error(`Invalid task at index ${index}: 'parent' must be a string`);
+    throw new Error(
+      `Invalid task at index ${index}: 'parent' must be a string`,
+    );
   }
   if (tags !== undefined) {
     if (!Array.isArray(tags) || !tags.every(isString)) {
@@ -67,12 +69,12 @@ function validateTask(raw: unknown, index: number): Task {
  * @throws Error if parsing or validation fails
  */
 export function parseSchedule(filePath: string): Schedule {
-  const content = readFileSync(filePath, 'utf-8');
+  const content = readFileSync(filePath, "utf-8");
   const ext = extname(filePath).toLowerCase();
   let data: unknown;
-  if (ext === '.yaml' || ext === '.yml') {
+  if (ext === ".yaml" || ext === ".yml") {
     data = YAML.parse(content);
-  } else if (ext === '.json') {
+  } else if (ext === ".json") {
     try {
       data = JSON.parse(content);
     } catch (e) {
@@ -87,8 +89,10 @@ export function parseSchedule(filePath: string): Schedule {
   if (Array.isArray(data)) {
     rawTasks = data;
   } else if (
-    typeof data === 'object' && data !== null &&
-    'tasks' in data && Array.isArray((data as Record<string, unknown>).tasks)
+    typeof data === "object" &&
+    data !== null &&
+    "tasks" in data &&
+    Array.isArray((data as Record<string, unknown>).tasks)
   ) {
     rawTasks = (data as Record<string, unknown>).tasks as unknown[];
   } else {

@@ -1,25 +1,25 @@
 /** @type {import("eslint").FlatConfig[]} */
-const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const tsPlugin = require("@typescript-eslint/eslint-plugin");
 
 module.exports = [
   {
-    ignores: ['dist/**', 'node_modules/**', '.yarn/**'],
+    ignores: ["dist/**", "node_modules/**", ".yarn/**"],
   },
   {
-    files: ['**/*.ts'],
+    files: ["**/*.ts"],
     languageOptions: {
-      parser: require('@typescript-eslint/parser'),
+      parser: require("@typescript-eslint/parser"),
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
+        sourceType: "module",
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      "@typescript-eslint": tsPlugin,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
-      'no-console': 'off',
+      "no-console": "off",
     },
   },
 ];

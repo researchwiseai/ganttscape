@@ -1,4 +1,4 @@
-import type { Task } from '../core/types.js';
+import type { Task } from "../core/types.js";
 
 /**
  * Represents the grid structure for rendering.
