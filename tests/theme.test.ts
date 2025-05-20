@@ -32,10 +32,13 @@ describe("theme utils", () => {
   });
 
   it("renderDates formats date array correctly", () => {
-    const dates = [new Date("2021-01-01"), new Date("2021-12-31")];
-    const header = renderDates(dates);
+    const dates = [
+      new Date("2021-01-01T00:00:00Z"),
+      new Date("2021-01-01T00:00:05Z"),
+    ];
+    const header = renderDates(dates, "second");
     const stripped = stripAnsi(header);
-    expect(stripped).toContain("01-01");
-    expect(stripped).toContain("12-31");
+    expect(stripped).toContain("00:00:00");
+    expect(stripped).toContain("00:00:05");
   });
 });

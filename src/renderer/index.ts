@@ -1,17 +1,18 @@
 import chalk from "chalk";
 import type { Schedule } from "../core/types.js";
-import { generateGrid } from "./layout.js";
+import { generateGrid, type Scale } from "./layout.js";
 import { formatLabel, renderDates } from "./theme.js";
 
 /**
- * Render the full schedule as an ANSI Gantt chart (daily scale).
- * Supports truncating wide charts via opts.width and tag-based color themes.
+ * Render the full schedule as an ANSI Gantt chart.
+ * Supports configurable time scale, width truncation and tag-based colours.
  */
 export function renderSchedule(
   schedule: Schedule,
-  opts: { width?: number } = {},
+  opts: { width?: number; scale?: Scale } = {},
 ): string {
-  let { dates, rows, labelWidth } = generateGrid(schedule.tasks);
+  const scale = opts.scale ?? "second";
+  let { dates, rows, labelWidth } = generateGrid(schedule.tasks, scale);
   // Handle width override: truncate dates and cells
   if (opts.width !== undefined && opts.width < dates.length) {
     dates = dates.slice(0, opts.width);
@@ -22,7 +23,7 @@ export function renderSchedule(
   }
 
   // Prepare header
-  const header = " ".repeat(labelWidth) + " " + renderDates(dates);
+  const header = " ".repeat(labelWidth) + " " + renderDates(dates, scale);
   const lines: string[] = [header];
 
   // Build tag color mapping (max 8 colors)
@@ -44,17 +45,17 @@ export function renderSchedule(
   });
 
   // Current date marker position
-  const today = new Date();
-  const currentDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-  ).getTime();
-  const markerIndex = dates.findIndex(
-    (d) =>
-      new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime() ===
-      currentDate,
-  );
+  const now = new Date();
+  const stepMs =
+    scale === "ms"
+      ? 1
+      : scale === "second"
+        ? 1000
+        : scale === "minute"
+          ? 60 * 1000
+          : 60 * 60 * 1000;
+  const currentTime = Math.floor(now.getTime() / stepMs) * stepMs;
+  const markerIndex = dates.findIndex((d) => d.getTime() === currentTime);
 
   // Render each task row
   rows.forEach(({ label, depth, cells, tags }) => {

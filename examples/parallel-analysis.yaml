@@ -1,0 +1,18 @@
+- label: Load Data
+  start: 2024-05-01T00:00:00.000Z
+  end: 2024-05-01T00:00:05.000Z
+- label: Analyze Sample A
+  start: 2024-05-01T00:00:05.000Z
+  end: 2024-05-01T00:00:20.000Z
+  parent: Load Data
+  tags: [analysis]
+- label: Analyze Sample B
+  start: 2024-05-01T00:00:05.000Z
+  end: 2024-05-01T00:00:18.000Z
+  parent: Load Data
+  tags: [analysis]
+- label: Collate Results
+  start: 2024-05-01T00:00:20.000Z
+  end: 2024-05-01T00:00:25.000Z
+  parent: Analyze Sample A
+  tags: [result]

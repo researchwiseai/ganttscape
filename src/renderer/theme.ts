@@ -24,12 +24,25 @@ export function renderBar(cells: boolean[]): string {
 /**
  * Render the date header in dim style as MM-DD columns separated by space.
  */
-export function renderDates(dates: Date[]): string {
+import type { Scale } from "./layout.js";
+
+export function renderDates(dates: Date[], scale: Scale): string {
   return dates
     .map((d) => {
-      const mon = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return chalk.dim(`${mon}-${day}`);
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      const ss = String(d.getSeconds()).padStart(2, "0");
+      const ms = String(d.getMilliseconds()).padStart(3, "0");
+      if (scale === "ms") {
+        return chalk.dim(`${hh}:${mm}:${ss}.${ms}`);
+      }
+      if (scale === "second") {
+        return chalk.dim(`${hh}:${mm}:${ss}`);
+      }
+      if (scale === "minute") {
+        return chalk.dim(`${hh}:${mm}`);
+      }
+      return chalk.dim(`${hh}`);
     })
     .join(" ");
 }

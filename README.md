@@ -22,34 +22,46 @@ $ ganttscape [options] <file>
 
 Options:
 -V, --version output the version number
---scale <day|week|month> Time scale (default: day) [daily scale only]
--w, --width <n> Truncate timeline width to n days
+--scale <ms|second|minute|hour> Time scale (default: second)
+-w, --width <n> Truncate timeline width to n time slots
 --no-color Disable ANSI colors
 -h, --help display help for command
 
 ## Example
 
-Given `examples/simple-schedule.yaml`:
+Given `examples/parallel-analysis.yaml`:
 
 ```yaml
-- label: Task A
-  start: 2021-01-01
-  end: 2021-01-03
-- label: Task B
-  start: 2021-01-02
-  end: 2021-01-04
-  parent: Task A
-  tags: [alpha]
+- label: Load Data
+  start: 2024-05-01T00:00:00.000Z
+  end: 2024-05-01T00:00:05.000Z
+- label: Analyze Sample A
+  start: 2024-05-01T00:00:05.000Z
+  end: 2024-05-01T00:00:20.000Z
+  parent: Load Data
+  tags: [analysis]
+- label: Analyze Sample B
+  start: 2024-05-01T00:00:05.000Z
+  end: 2024-05-01T00:00:18.000Z
+  parent: Load Data
+  tags: [analysis]
+- label: Collate Results
+  start: 2024-05-01T00:00:20.000Z
+  end: 2024-05-01T00:00:25.000Z
+  parent: Analyze Sample A
+  tags: [result]
 ```
 
 Running:
 
 ```bash
-$ ganttscape examples/simple-schedule.yaml
+$ ganttscape --scale second examples/parallel-analysis.yaml
 ganttscape v0.1.0
-         01-01 01-02 01-03 01-04
-Task A   ███░
-  Task B ░███
+         00:00:00 00:00:05 00:00:10 00:00:15 00:00:20 00:00:25
+Load Data          █████
+  Analyze Sample A ░████████████████
+  Analyze Sample B ░██████████████
+  Collate Results  ░░░░░█████
 ```
 
 ## Architecture
