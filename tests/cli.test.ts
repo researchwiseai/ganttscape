@@ -44,6 +44,26 @@ describe("CLI integration", () => {
     rmSync(tmp, { recursive: true, force: true });
   });
 
+  it("accepts auto scale option", () => {
+    const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
+    const file = join(tmp, "sched.json");
+    writeFileSync(
+      file,
+      JSON.stringify([
+        {
+          label: "A",
+          start: "2024-05-01T00:00:00Z",
+          end: "2024-05-03T00:00:00Z",
+        },
+      ]),
+      "utf-8",
+    );
+    const cliPath = join(process.cwd(), "dist", "cli.js");
+    const result = execaSync("node", [cliPath, file, "--scale", "auto"]);
+    expect(result.stdout).toContain("A");
+    rmSync(tmp, { recursive: true, force: true });
+  });
+
   it("passes width option to renderer", () => {
     const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
     const file = join(tmp, "sched.json");

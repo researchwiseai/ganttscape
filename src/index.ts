@@ -12,5 +12,5 @@ export const version = "0.1.0";
  * @returns empty string for now
  */
 import { renderSchedule } from "./renderer/index.js";
-import { inferScale } from "./renderer/scale.js";
-export { renderSchedule, inferScale };
+import { inferScale, inferScheduleScale } from "./renderer/scale.js";
+export { renderSchedule, inferScale, inferScheduleScale };
