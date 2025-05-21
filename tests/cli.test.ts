@@ -20,7 +20,7 @@ describe('CLI integration', () => {
         const result = execaSync('node', [cliPath, file]);
         const out = result.stdout;
         expect(out).toContain('00:00:00');
-        expect(out).toContain('█');
+        expect(out).toContain('█'); 
         rmSync(tmp, { recursive: true, force: true });
     });
 
@@ -134,3 +134,20 @@ describe('CLI integration', () => {
         rmSync(tmp, { recursive: true, force: true });
     });
 });
+
+describe('CLI Command', () => {
+    it('should accept a valid yaml file', () => {
+        const tmp = mkdtempSync(join(os.tmpdir(), 'ganttscape-'));
+        const file = join(tmp, 'sched.yaml');
+        writeFileSync(
+            file,
+            `
+tasks:
+  - label: A
+    start: 2024-05-01T00:00:00Z
+    end: 2024-05-01T00:00:02Z
+`,
+            'utf-8',
+        );
+    })
+})
