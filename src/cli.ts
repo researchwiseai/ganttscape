@@ -52,8 +52,9 @@ program
       console.error("Error parsing schedule:", err instanceof Error ? err.message : err);
       process.exit(1);
     }
+    const termWidth = process.stdout.columns;
     const finalScale =
-      scale === "auto" ? inferScheduleScale(schedule.tasks) : scale;
+      scale === "auto" ? inferScheduleScale(schedule.tasks, termWidth) : scale;
     let output;
     try {
       output = renderSchedule(schedule, { width, scale: finalScale });

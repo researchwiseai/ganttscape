@@ -38,4 +38,16 @@ describe("inferScheduleScale", () => {
     ];
     expect(inferScheduleScale(tasks)).toBe("hour");
   });
+
+  it("uses terminal width when provided", () => {
+    const tasks: Task[] = [
+      {
+        label: "A",
+        start: new Date("2024-05-01T00:00:00Z"),
+        end: new Date("2024-05-01T00:00:10Z"),
+      },
+    ];
+    expect(inferScheduleScale(tasks, 100)).toBe("second");
+    expect(inferScheduleScale(tasks, 10)).toBe("minute");
+  });
 });
