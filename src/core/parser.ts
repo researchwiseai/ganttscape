@@ -101,5 +101,14 @@ export function parseSchedule(filePath: string): Schedule {
     );
   }
   const tasks = rawTasks.map((raw, idx) => validateTask(raw, idx));
+  // Validate that all parent references match an existing task label
+  const labels = new Set(tasks.map((t) => t.label));
+  tasks.forEach((task, idx) => {
+    if (task.parent !== undefined && !labels.has(task.parent)) {
+      throw new Error(
+        `Invalid task at index ${idx}: parent '${task.parent}' not found`,
+      );
+    }
+  });
   return { tasks };
 }
