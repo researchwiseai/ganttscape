@@ -44,14 +44,14 @@ program
     try {
       schedule = parseSchedule(file);
     } catch (err) {
-      console.error("Error parsing schedule:", err.message);
+      console.error("Error parsing schedule:", err instanceof Error ? err.message : err);
       process.exit(1);
     }
     let output;
     try {
       output = renderSchedule(schedule, { width, scale });
     } catch (err) {
-      console.error("Error rendering schedule:", err.message);
+      console.error("Error rendering schedule:", err instanceof Error ? err.message : err);
       process.exit(1);
     }
     process.stdout.write(output + "\n");
