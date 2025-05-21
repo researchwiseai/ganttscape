@@ -1,4 +1,5 @@
 import type { Task } from "../core/types.js";
+import stringWidth from "string-width";
 
 /**
  * Represents the grid structure for rendering.
@@ -33,7 +34,7 @@ export function generateGrid(tasks: Task[], scale: Scale = "second"): Grid {
     if (t.start < minDate) minDate = t.start;
     if (t.end > maxDate) maxDate = t.end;
     // length plus indentation for nested tasks
-    labelLengths.push(t.label.length + (t.parent ? 2 : 0));
+    labelLengths.push(stringWidth(t.label) + (t.parent ? 2 : 0));
     taskMap[t.label] = t;
   });
   // Build time array according to scale
