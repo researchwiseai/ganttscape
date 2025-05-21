@@ -1,43 +1,43 @@
 name: CI
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18, 20]
-    steps:
-      - uses: actions/checkout@v3
-      - name: "Use Node.js ${{ matrix.node-version }}"
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: yarn
-      - name: Cache Yarn PnP cache
-        uses: actions/cache@v3
-        with:
-          path: .yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install --immutable
-      - name: Type-check
-        run: npx tsc --noEmit
-      - name: Lint
-        run: yarn lint
-      - name: Build
-        run: yarn build
-      - name: Test with coverage
-        run: yarn coverage
-      - name: Upload coverage to QLTY
-        uses: qltysh/qlty-action/coverage@v1
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: coverage/lcov.info
-      - name: Dry-run publish
-        run: npm publish --dry-run
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [18, 20, 22]
+        steps:
+            - uses: actions/checkout@v3
+            - name: 'Use Node.js ${{ matrix.node-version }}'
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: yarn
+            - name: Cache Yarn PnP cache
+              uses: actions/cache@v3
+              with:
+                  path: .yarn/cache
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+            - name: Install dependencies
+              run: yarn install --immutable
+            - name: Type-check
+              run: npx tsc --noEmit
+            - name: Lint
+              run: yarn lint
+            - name: Build
+              run: yarn build
+            - name: Test with coverage
+              run: yarn coverage
+            - name: Upload coverage to QLTY
+              uses: qltysh/qlty-action/coverage@v1
+              with:
+                  token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+                  files: coverage/lcov.info
+            - name: Dry-run publish
+              run: npm publish --dry-run
