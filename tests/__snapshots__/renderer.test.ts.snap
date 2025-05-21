@@ -9,7 +9,7 @@ A       ████
 `;
 
 exports[`renderSchedule > renders simple schedule snapshot 1`] = `
-"         00:00:00 00:00:01 00:00:02 00:00:03
-Task A   ███░
-  Task B ░███"
+"       00:00:00 00:00:01 00:00:02 00:00:03
+Task A ███░
+  長い   ░███"
 `;

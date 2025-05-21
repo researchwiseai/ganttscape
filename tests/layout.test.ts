@@ -10,19 +10,26 @@ describe("layout utils", () => {
     expect(grid.labelWidth).toBe(0);
   });
 
-  it("generateGrid computes correct dates and rows", () => {
+  it("generateGrid computes correct dates, rows and label width", () => {
     const tasks: Task[] = [
       {
         label: "A",
         start: new Date("2024-05-01T00:00:00Z"),
         end: new Date("2024-05-01T00:00:01Z"),
       },
+      {
+        label: "長い",
+        start: new Date("2024-05-01T00:00:00Z"),
+        end: new Date("2024-05-01T00:00:01Z"),
+        parent: "A",
+      },
     ];
     const grid = generateGrid(tasks, "second");
     expect(grid.dates.length).toBe(2);
-    expect(grid.rows.length).toBe(1);
+    expect(grid.rows.length).toBe(2);
     expect(grid.rows[0].cells).toEqual([true, true]);
-    expect(grid.labelWidth).toBe(1);
+    expect(grid.rows[1].depth).toBe(1);
+    expect(grid.labelWidth).toBe(6);
   });
 
   it("generateGrid computes depth recursively", () => {
