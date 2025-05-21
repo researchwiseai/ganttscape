@@ -18,8 +18,8 @@ jobs:
       - name: Build
         run: yarn build
       - name: Version packages
-        run: npx changeset version
+        run: yarn changeset version
       - name: Publish packages
-        run: npx changeset publish
+        run: yarn changeset publish
         env:
           NODE_AUTH_TOKEN: "${{ secrets.NPM_TOKEN }}"
