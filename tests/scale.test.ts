@@ -28,14 +28,26 @@ describe('inferScheduleScale', () => {
         expect(inferScheduleScale([])).toBe('second');
     });
 
-    it('infers hour scale for multi-day schedule', () => {
-        const tasks: Task[] = [
-            {
-                label: 'A',
-                start: new Date('2021-01-01'),
-                end: new Date('2021-01-03'),
-            },
-        ];
-        expect(inferScheduleScale(tasks)).toBe('hour');
-    });
+  it("infers hour scale for multi-day schedule", () => {
+    const tasks: Task[] = [
+      {
+        label: "A",
+        start: new Date("2021-01-01"),
+        end: new Date("2021-01-03"),
+      },
+    ];
+    expect(inferScheduleScale(tasks)).toBe("hour");
+  });
+
+  it("uses terminal width when provided", () => {
+    const tasks: Task[] = [
+      {
+        label: "A",
+        start: new Date("2024-05-01T00:00:00Z"),
+        end: new Date("2024-05-01T00:00:10Z"),
+      },
+    ];
+    expect(inferScheduleScale(tasks, 100)).toBe("second");
+    expect(inferScheduleScale(tasks, 10)).toBe("minute");
+  });
 });
