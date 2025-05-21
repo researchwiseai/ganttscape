@@ -32,7 +32,12 @@ jobs:
         run: yarn lint
       - name: Build
         run: yarn build
-      - name: Test
-        run: yarn test
+      - name: Test with coverage
+        run: yarn coverage
+      - name: Upload coverage to QLTY
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
       - name: Dry-run publish
         run: npm publish --dry-run

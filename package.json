@@ -9,6 +9,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist && tsup src/cli.ts --format esm,cjs --out-dir dist",
     "lint": "eslint . --ext .ts",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "cli": "node dist/cli.js"
   },
   "exports": {
