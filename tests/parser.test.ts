@@ -77,10 +77,11 @@ describe("parseSchedule", () => {
 
   it("parses and includes optional fields", () => {
     const tasks = [
+      { label: "parent-label", start: "2021-01-01", end: "2021-01-02" },
       {
         label: "T",
-        start: "2021-01-01",
-        end: "2021-01-02",
+        start: "2021-01-02",
+        end: "2021-01-03",
         description: "desc",
         parent: "parent-label",
         tags: ["a", "b"],
@@ -88,7 +89,7 @@ describe("parseSchedule", () => {
     ];
     const file = writeTempFile(JSON.stringify(tasks), ".json");
     const schedule = parseSchedule(file);
-    const t = schedule.tasks[0];
+    const t = schedule.tasks[1];
     expect(t.description).toBe("desc");
     expect(t.parent).toBe("parent-label");
     expect(t.tags).toEqual(["a", "b"]);
@@ -126,6 +127,26 @@ describe("parseSchedule", () => {
     const file2 = writeTempFile(JSON.stringify(bad2), ".json");
     expect(() => parseSchedule(file2)).toThrow(/tags/);
     rmSync(file2, { recursive: true, force: true });
+  });
+
+  it("throws when parent label does not exist", () => {
+    const bad = [
+      { label: "A", start: "2021-01-01", end: "2021-01-02", parent: "B" },
+    ];
+    const file = writeTempFile(JSON.stringify(bad), ".json");
+    expect(() => parseSchedule(file)).toThrow(/parent 'B' not found/);
+    rmSync(file, { recursive: true, force: true });
+  });
+
+  it("allows parent referencing a later task", () => {
+    const tasks = [
+      { label: "child", start: "2021-01-02", end: "2021-01-03", parent: "parent" },
+      { label: "parent", start: "2021-01-01", end: "2021-01-04" },
+    ];
+    const file = writeTempFile(JSON.stringify(tasks), ".json");
+    const schedule = parseSchedule(file);
+    expect(schedule.tasks[0].parent).toBe("parent");
+    rmSync(file, { recursive: true, force: true });
   });
 
   it("throws on invalid JSON syntax", () => {
