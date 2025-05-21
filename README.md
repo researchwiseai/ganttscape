@@ -52,10 +52,10 @@ Given `examples/parallel-analysis.yaml`:
   tags: [result]
 ```
 
-Running:
+Running (default second scale):
 
 ```bash
-$ ganttscape --scale second examples/parallel-analysis.yaml
+$ ganttscape examples/parallel-analysis.yaml
 ganttscape v0.1.0
          00:00:00 00:00:05 00:00:10 00:00:15 00:00:20 00:00:25
 Load Data          █████
