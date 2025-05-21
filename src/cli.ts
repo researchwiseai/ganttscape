@@ -1,6 +1,11 @@
 import { Command } from "commander";
 import chalk from "chalk";
-import { parseSchedule, renderSchedule, version } from "./index.js";
+import {
+  parseSchedule,
+  renderSchedule,
+  version,
+  inferScheduleScale,
+} from "./index.js";
 
 const program = new Command();
 
@@ -13,8 +18,8 @@ program
   .argument("<file>", "Path to schedule file (YAML or JSON)")
   .option(
     "--scale <scale>",
-    "Time scale: ms | second | minute | hour",
-    "second",
+    "Time scale: auto | ms | second | minute | hour",
+    "auto",
   )
   .option(
     "-w, --width <number>",
@@ -25,7 +30,7 @@ program
   .option("--no-color", "Disable ANSI colors")
   .action((file, options) => {
     const { scale, width, color } = options;
-    if (!["ms", "second", "minute", "hour"].includes(scale)) {
+    if (!["ms", "second", "minute", "hour", "auto"].includes(scale)) {
       console.error(`Unsupported scale: ${scale}`);
       process.exit(1);
     }
@@ -47,9 +52,11 @@ program
       console.error("Error parsing schedule:", err instanceof Error ? err.message : err);
       process.exit(1);
     }
+    const finalScale =
+      scale === "auto" ? inferScheduleScale(schedule.tasks) : scale;
     let output;
     try {
-      output = renderSchedule(schedule, { width, scale });
+      output = renderSchedule(schedule, { width, scale: finalScale });
     } catch (err) {
       console.error("Error rendering schedule:", err instanceof Error ? err.message : err);
       process.exit(1);

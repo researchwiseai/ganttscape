@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { inferScale } from "../src/renderer/scale.js";
+import { inferScale, inferScheduleScale } from "../src/renderer/scale.js";
+import type { Task } from "../src/core/types.js";
 
 describe("inferScale", () => {
   it("returns ms for durations up to 1s", () => {
@@ -19,5 +20,22 @@ describe("inferScale", () => {
 
   it("returns hour for longer durations", () => {
     expect(inferScale(60 * 60 * 1000 + 1)).toBe("hour");
+  });
+});
+
+describe("inferScheduleScale", () => {
+  it("handles empty task list", () => {
+    expect(inferScheduleScale([])).toBe("second");
+  });
+
+  it("infers hour scale for multi-day schedule", () => {
+    const tasks: Task[] = [
+      {
+        label: "A",
+        start: new Date("2021-01-01"),
+        end: new Date("2021-01-03"),
+      },
+    ];
+    expect(inferScheduleScale(tasks)).toBe("hour");
   });
 });

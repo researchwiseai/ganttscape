@@ -52,7 +52,7 @@ export function generateGrid(tasks: Task[], scale: Scale = "second"): Grid {
     if (t.end > maxDate) maxDate = t.end;
     const depth = getDepth(t);
     // length plus indentation for nested tasks
-    labelLengths.push(stringWidth(t.label) + (t.parent ? 2 : 0));
+    labelLengths.push(stringWidth(t.label) + depth * 2);
     taskMap[t.label] = t;
   });
   // Build time array according to scale

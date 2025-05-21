@@ -22,7 +22,7 @@ $ ganttscape [options] <file>
 
 Options:
 -V, --version output the version number
---scale <ms|second|minute|hour> Time scale (default: second)
+--scale <auto|ms|second|minute|hour> Time scale (default: auto)
 -w, --width <n> Truncate timeline width to n time slots
 --no-color Disable ANSI colors
 -h, --help display help for command
@@ -52,7 +52,7 @@ Given `examples/parallel-analysis.yaml`:
   tags: [result]
 ```
 
-Running (default second scale):
+Running (default auto scale):
 
 ```bash
 $ ganttscape examples/parallel-analysis.yaml
