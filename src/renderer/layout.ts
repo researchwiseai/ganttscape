@@ -29,12 +29,29 @@ export function generateGrid(tasks: Task[], scale: Scale = "second"): Grid {
   let maxDate = tasks[0].end;
   const labelLengths: number[] = [];
   const taskMap: Record<string, Task> = {};
+
+  // Build lookup map first so we can follow parent chains
+  tasks.forEach((t) => {
+    taskMap[t.label] = t;
+  });
+
+  // Helper to compute depth by traversing the parent chain
+  function getDepth(task: Task): number {
+    let depth = 0;
+    let current = task.parent;
+    while (current && taskMap[current]) {
+      depth += 1;
+      current = taskMap[current].parent;
+    }
+    return depth;
+  }
+
   tasks.forEach((t) => {
     if (t.start < minDate) minDate = t.start;
     if (t.end > maxDate) maxDate = t.end;
+    const depth = getDepth(t);
     // length plus indentation for nested tasks
-    labelLengths.push(t.label.length + (t.parent ? 2 : 0));
-    taskMap[t.label] = t;
+    labelLengths.push(t.label.length + depth * 2);
   });
   // Build time array according to scale
   const stepMs =
@@ -51,7 +68,7 @@ export function generateGrid(tasks: Task[], scale: Scale = "second"): Grid {
   }
   // Compute rows
   const rows = tasks.map((t) => {
-    const depth = t.parent && taskMap[t.parent] ? 1 : 0;
+    const depth = getDepth(t);
     const cells = dates.map((d) => d >= t.start && d <= t.end);
     return { label: t.label, depth, cells, tags: t.tags };
   });
