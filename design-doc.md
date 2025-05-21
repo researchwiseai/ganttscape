@@ -90,7 +90,7 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 ### 8. Rendering Specification
 
-- **Time axis granularity:** day columns by default (`--scale week|month`).
+- **Time axis granularity:** second columns by default (`--scale ms|minute|hour`).
 - **Characters:** full block `█` for duration, light shade `░` for incomplete; fallback to `#` when Unicode not supported.
 - **Colours:** auto‑assign distinct hues per tag (max 8) or use monochrome.
 - **Layout rules**
@@ -132,7 +132,7 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 | Version | Features                                                         |
 | ------- | ---------------------------------------------------------------- |
-| v0.1.0  | YAML+JSON input, daily scale, colours off flag, ESM+CJS bundles. |
+| v0.1.0  | YAML+JSON input, second scale, colours off flag, ESM+CJS bundles. |
 | v0.2.0  | Weekly/month scale, CSV input, tag colour configuration.         |
 | v0.3.0  | Windows ANSI support, interactive scroll mode (Ink).             |
 | v1.0.0  | Mermaid export, PNG/SVG generation, plugin API, Windows GA.      |
