@@ -90,14 +90,14 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 ### 8. Rendering Specification
 
- - **Time axis granularity:** automatic scale detection by default (`--scale auto|ms|minute|hour`).
+- **Time axis granularity:** automatic scale detection by default (`--scale auto|ms|minute|hour`).
 - **Characters:** full block `█` for duration, light shade `░` for incomplete; fallback to `#` when Unicode not supported.
 - **Colours:** auto‑assign distinct hues per tag (max 8) or use monochrome.
 - **Layout rules**
 
-  - Task label column width = longest label + padding (truncate with ellipsis).
-  - Indentation for nested tasks (2‑space per level).
-  - Current date marker `│` in bright white.
+    - Task label column width = longest label + padding (truncate with ellipsis).
+    - Indentation for nested tasks (2‑space per level).
+    - Current date marker `│` in bright white.
 
 - **Width overflow:** wrap or cut the rightmost timeline when terminal width < chart width; support `--width` flag.
 
@@ -112,14 +112,14 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 1. **CI** (`ci.yml`)
 
-   - Strategy matrix: node 18, 20; os: ubuntu‑latest.
-   - Steps: install (Yarn cache), lint (eslint), test (Vitest + coverage), build (tsup), dry‑run publish.
+    - Strategy matrix: node 18, 20; os: ubuntu‑latest.
+    - Steps: install (Yarn cache), lint (eslint), test (Vitest + coverage), build (tsup), dry‑run publish.
 
 2. **Release** (`release.yml`)
 
-   - Trigger: push to `main` with `version/*` label.
-   - Runs `changeset version && changeset publish`.
-   - Generates artefacts & attaches built binaries.
+    - Trigger: push to `main` with `version/*` label.
+    - Runs `changeset version && changeset publish`.
+    - Generates artefacts & attaches built binaries.
 
 ### 11. Testing Strategy
 
@@ -130,12 +130,12 @@ Build an open‑source TypeScript command‑line tool that renders project timel
 
 ### 12. Roadmap
 
-| Version | Features                                                         |
-| ------- | ---------------------------------------------------------------- |
+| Version | Features                                                                  |
+| ------- | ------------------------------------------------------------------------- |
 | v0.1.0  | YAML+JSON input, auto scale detection, colours off flag, ESM+CJS bundles. |
-| v0.2.0  | Weekly/month scale, CSV input, tag colour configuration.         |
-| v0.3.0  | Windows ANSI support, interactive scroll mode (Ink).             |
-| v1.0.0  | Mermaid export, PNG/SVG generation, plugin API, Windows GA.      |
+| v0.2.0  | Weekly/month scale, CSV input, tag colour configuration.                  |
+| v0.3.0  | Windows ANSI support, interactive scroll mode (Ink).                      |
+| v1.0.0  | Mermaid export, PNG/SVG generation, plugin API, Windows GA.               |
 
 ### 13. Risks & Mitigations
 

@@ -13,6 +13,12 @@ lives under `src/` and unit tests under `tests/`.
   (>90 %) as noted in `design-doc.md`.
 - **Building** – Production bundles are generated with `tsup` into `dist/`.
 - **CI** – GitHub Actions run `yarn lint`, `yarn test`, type checks and build.
+- **Documentation** – The repository uses JSDoc for inline documentation. The
+  `docs/` directory contains additional documentation, including this file.
+- **Versioning** – The repository uses [Semantic Versioning](https://semver.org/)
+- **Formatting** – The repository uses Prettier for code formatting. It is
+  recommended to use the Prettier extension for your editor to ensure consistent
+  formatting.
 
 ## Required commands before committing
 
@@ -22,6 +28,7 @@ Run the following to ensure consistency:
 # Install dependencies if needed
 yarn install --immutable
 # Lint and test
+yarn format
 yarn lint
 yarn test
 ```
@@ -34,4 +41,3 @@ npx tsc --noEmit
 
 Commits should have concise messages using the conventional `feat:`, `fix:`,
 `docs:`, `chore:` prefixes where appropriate.
-

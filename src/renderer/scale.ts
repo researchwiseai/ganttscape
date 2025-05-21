@@ -8,10 +8,10 @@ import stringWidth from "string-width";
  * up to 1 hour use "minute", otherwise "hour".
  */
 export function inferScale(durationMs: number): Scale {
-  if (durationMs <= 1000) return "ms";
-  if (durationMs <= 60 * 1000) return "second";
-  if (durationMs <= 60 * 60 * 1000) return "minute";
-  return "hour";
+    if (durationMs <= 1000) return 'ms';
+    if (durationMs <= 60 * 1000) return 'second';
+    if (durationMs <= 60 * 60 * 1000) return 'minute';
+    return 'hour';
 }
 
 /**
