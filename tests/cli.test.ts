@@ -23,6 +23,68 @@ describe("CLI integration", () => {
     expect(out).toContain("█");
     rmSync(tmp, { recursive: true, force: true });
   });
+
+  it("passes scale option to renderer", () => {
+    const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
+    const file = join(tmp, "sched.json");
+    writeFileSync(
+      file,
+      JSON.stringify([
+        {
+          label: "A",
+          start: "2024-05-01T00:00:00.000Z",
+          end: "2024-05-01T00:00:00.002Z",
+        },
+      ]),
+      "utf-8",
+    );
+    const cliPath = join(process.cwd(), "dist", "cli.js");
+    const result = execaSync("node", [cliPath, file, "--scale", "ms"]);
+    expect(result.stdout).toContain(".000");
+    rmSync(tmp, { recursive: true, force: true });
+  });
+
+  it("passes width option to renderer", () => {
+    const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
+    const file = join(tmp, "sched.json");
+    writeFileSync(
+      file,
+      JSON.stringify([
+        {
+          label: "A",
+          start: "2024-05-01T00:00:00Z",
+          end: "2024-05-01T00:00:02Z",
+        },
+      ]),
+      "utf-8",
+    );
+    const cliPath = join(process.cwd(), "dist", "cli.js");
+    const result = execaSync("node", [cliPath, file, "--width", "1", "--scale", "second"]);
+    const header = result.stdout.split("\n")[0];
+    const cols = header.trim().split(/\s+/);
+    expect(cols).toHaveLength(1);
+    rmSync(tmp, { recursive: true, force: true });
+  });
+
+  it("respects no-color flag", () => {
+    const tmp = mkdtempSync(join(os.tmpdir(), "ganttscape-"));
+    const file = join(tmp, "sched.json");
+    writeFileSync(
+      file,
+      JSON.stringify([
+        {
+          label: "A",
+          start: "2024-05-01T00:00:00Z",
+          end: "2024-05-01T00:00:02Z",
+        },
+      ]),
+      "utf-8",
+    );
+    const cliPath = join(process.cwd(), "dist", "cli.js");
+    const result = execaSync("node", [cliPath, file, "--no-color"]);
+    expect(/\u001b\[/.test(result.stdout)).toBe(false);
+    rmSync(tmp, { recursive: true, force: true });
+  });
   it("exits with error when no arguments", () => {
     const cliPath = join(process.cwd(), "dist", "cli.js");
     const result = execaSync("node", [cliPath], { reject: false });
