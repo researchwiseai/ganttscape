@@ -7,6 +7,17 @@ function isString(value: unknown): value is string {
   return typeof value === "string";
 }
 
+function parseFlexibleDate(value: string): Date | null {
+  const ts = Date.parse(value);
+  if (!Number.isNaN(ts)) return new Date(ts);
+  const match = value.match(/^(.+[+-]\d{2}:\d{2})Z$/);
+  if (match) {
+    const ts2 = Date.parse(match[1]);
+    if (!Number.isNaN(ts2)) return new Date(ts2);
+  }
+  return null;
+}
+
 function validateTask(raw: unknown, index: number): Task {
   if (typeof raw !== "object" || raw === null) {
     throw new Error(`Invalid task at index ${index}: not an object`);
@@ -18,12 +29,14 @@ function validateTask(raw: unknown, index: number): Task {
       `Invalid task at index ${index}: 'label' is required and must be a non-empty string`,
     );
   }
-  if (!isString(start) || Number.isNaN(Date.parse(start))) {
+  const startDate = isString(start) ? parseFlexibleDate(start) : null;
+  if (!startDate) {
     throw new Error(
       `Invalid task at index ${index}: 'start' must be a valid date string`,
     );
   }
-  if (!isString(end) || Number.isNaN(Date.parse(end))) {
+  const endDate = isString(end) ? parseFlexibleDate(end) : null;
+  if (!endDate) {
     throw new Error(
       `Invalid task at index ${index}: 'end' must be a valid date string`,
     );
@@ -46,8 +59,6 @@ function validateTask(raw: unknown, index: number): Task {
     }
   }
   // Parse dates and validate chronological order
-  const startDate = new Date(start as string);
-  const endDate = new Date(end as string);
   if (endDate < startDate) {
     throw new Error(
       `Invalid task at index ${index}: 'end' date (${end}) is before 'start' date (${start})`,

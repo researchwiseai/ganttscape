@@ -155,6 +155,25 @@ describe("parseSchedule", () => {
     rmSync(file, { recursive: true, force: true });
   });
 
+  it("parses dates with trailing Z after offset", () => {
+    const tasks = [
+      {
+        label: "T",
+        start: "2025-05-20T12:00:01.967+00:00Z",
+        end: "2025-05-20T12:00:03.335+00:00Z",
+      },
+    ];
+    const file = writeTempFile(JSON.stringify(tasks), ".json");
+    const schedule = parseSchedule(file);
+    expect(schedule.tasks[0].start.toISOString()).toBe(
+      "2025-05-20T12:00:01.967Z",
+    );
+    expect(schedule.tasks[0].end.toISOString()).toBe(
+      "2025-05-20T12:00:03.335Z",
+    );
+    rmSync(file, { recursive: true, force: true });
+  });
+
   it("throws when tasks property is not an array", () => {
     const obj = { tasks: {} };
     const file = writeTempFile(JSON.stringify(obj), ".json");
